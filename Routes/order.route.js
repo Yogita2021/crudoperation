@@ -23,7 +23,7 @@ orderRouter.get("/orders/:id", async (req, res) => {
     const order = await Order.findOne({ _id: id })
       .populate("user")
       .populate("restaurant");
-    console.log(order);
+    // console.log(order);
     if (!order) {
       return res.status(404).json({ msg: "Order not found" });
     }
@@ -41,8 +41,7 @@ orderRouter.patch("/orders/:id", async (req, res) => {
   try {
     const data = await Order.findById(id);
     if (!data) {
-      throw new Error("order not found");
-      return;
+      return res.status(404).json({ msg: "Order not found" });
     }
     await Order.findByIdAndUpdate(id, { status: status });
     return res.status(200).json({

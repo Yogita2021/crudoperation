@@ -94,31 +94,4 @@ userRouter.patch("/user/reset/:id", async (req, res) => {
   }
 });
 
-// userRouter.patch("/user/reset/:id", async (req, res) => {
-//   try {
-//     const { newpassword, oldpassword } = req.body;
-//     const { id } = req.params;
-//     const user = await User.findById(id);
-
-//     if (!user) {
-//       return res.status(400).json({ msg: "User not found!!" });
-//     }
-
-//     const { password } = user;
-//     const isPass = bcrypt.compareSync(oldpassword, password);
-
-//     if (!isPass) {
-//       return res.status(400).json({ msg: "Wrong password" });
-//     } else {
-//       const hash = bcrypt.hashSync(newpassword, 8);
-//       await User.findByIdAndUpdate(id, { password: hash });
-//       return res
-//         .status(204)
-//         .send({ isError: false, message: "Password reset successfully" });
-//     }
-//   } catch (error) {
-//     return res.status(400).json({ isError: true, msg: error.message });
-//   }
-// });
-
 module.exports = { userRouter };
