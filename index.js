@@ -5,12 +5,14 @@ const app = express();
 
 const { userRouter } = require("./Routes/user.route");
 const { restaurantRouter } = require("./Routes/restaurant.route");
+const { orderRouter } = require("./Routes/order.route");
 app.get("/", (req, res) => {
   res.send("Hello I am server");
 });
 app.use(express.json());
 app.use("/api", userRouter);
 app.use("/api", restaurantRouter);
+app.use("/api", orderRouter);
 
 app.listen(process.env.PORT, async () => {
   try {

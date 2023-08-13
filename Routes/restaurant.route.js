@@ -95,14 +95,24 @@ restaurantRouter.delete("/restaurants/:id/menu/:id2", async (req, res) => {
 
     const resto = await Restaurant.findById(id);
     if (!resto) {
-      return res.status(400).json({ msg: "resto not found" });
+      return res.status(400).json({ msg: "Restaurant not found" });
     }
-    const deleteMenu = await Restaurant.findByIdAndDelete(id, {
-      $pull: { menu: { _id: id2 } },
+
+    const updatedResto = await Restaurant.findByIdAndUpdate(
+      id,
+      { $pull: { menu: { _id: id2 } } },
+      { new: true }
+    );
+
+    if (!updatedResto) {
+      return res.status(400).json({ msg: "Failed to update restaurant" });
+    }
+
+    return res.status(202).json({
+      isError: false,
+      msg: "Menu deleted successfully",
+      restaurant: updatedResto,
     });
-    return res
-      .status(202)
-      .json({ isError: false, msg: "menu deleted successfully" });
   } catch (error) {
     res.status(400).json({ isError: true, msg: error.message });
   }
