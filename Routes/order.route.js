@@ -23,7 +23,7 @@ orderRouter.get("/orders/:id", async (req, res) => {
     const order = await Order.findOne({ _id: id })
       .populate("user")
       .populate("restaurant");
-
+    console.log(order);
     if (!order) {
       return res.status(404).json({ msg: "Order not found" });
     }
@@ -34,43 +34,21 @@ orderRouter.get("/orders/:id", async (req, res) => {
   }
 });
 
-// get order details
-orderRouter.get("/orders/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const data = await Order.findById(id);
-    if (!data) {
-      throw new Error("order not found");
-      return;
-    }
-    return res.status(200).json({
-      error: false,
-      message: "your order details",
-      order: data,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      error: true,
-      message: error.message,
-    });
-  }
-});
-
 // update order status
 orderRouter.patch("/orders/:id", async (req, res) => {
   const { id } = req.params;
-  const { newStatus } = req.query;
+  const { status } = req.body;
   try {
     const data = await Order.findById(id);
     if (!data) {
       throw new Error("order not found");
       return;
     }
-    await Order.findByIdAndUpdate(id, { ...data, status: newStatus });
+    await Order.findByIdAndUpdate(id, { status: status });
     return res.status(200).json({
       error: false,
       message: "status update successfully",
-      newStatus,
+      status,
     });
   } catch (error) {
     return res.status(400).json({
